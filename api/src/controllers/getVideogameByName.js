@@ -1,31 +1,37 @@
 const axios = require('axios');
+const { Videogame } = require('../db'); 
+const { Op } = require('sequelize');
 require('dotenv').config()
 const { API_KEY } = process.env
 const URL = `https://api.rawg.io/api/games`
 
     const getVideogameByName = async (name) => {
         try {
-            const { data } = await axios(`${URL}?search=${name}?key=${API_KEY}`);
-            const gameFound = {
-                name: data.name,
-                description: data.description_raw,
-                platforms: data.platforms.map((platformInfo) => ({
-                    id: platformInfo.platform.id,
-                    name: platformInfo.platform.name,
-                    image: platformInfo.platform.image,
-                    year_start: platformInfo.platform.year_start,
-                    year_end: platformInfo.platform.year_end,
-                    games_count: platformInfo.platform.games_count,
-                    released_at: platformInfo.released_at,
-                    requirements_en: platformInfo.requirements_en,
-                })),
-                image: data.image,
-                dateReleased: data.released,
-                rating: data.rating,
-            }
-            return gameFound;
+            
+            const dbGames = await Videogame.findAll({
+                where: {
+                    name: {
+                        [Op.iLike]: `%${name}%`
+                    } 
+                }
+            });
+            const { data } = await axios(`${URL}?key=${API_KEY}&search=${name}`);
+            
+            const apiGames = data.results.map(({id, name, platforms, background_image, released, rating, genres}) => ({
+                id,
+                name,
+                platforms,
+                image: background_image,
+                released,
+                rating,
+                genres
+            }))
+            const allGames = [...dbGames, ...apiGames]
+            const gameFounds = allGames.slice(0,15)
+            return gameFounds;
             
         } catch (error) {
+
             throw error;
         }
 }

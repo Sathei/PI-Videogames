@@ -1,4 +1,4 @@
-const { postVideogame } = require('../controllers/postVideogame');
+const { createGame } = require('../controllers/postVideogame');
 
 const postVideogameHandler =  async (req, res) => {
     try {
@@ -13,7 +13,7 @@ const postVideogameHandler =  async (req, res) => {
             rating,
 
         };
-        const newGame = await postVideogame.createGame(gameData);
+        const newGame = await createGame(gameData);
         return res.status(201).json(newGame);
     } catch (error) {
         return res.status(400).json({Error: error.message});

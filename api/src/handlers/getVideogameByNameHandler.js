@@ -9,7 +9,7 @@ const getVideogameByNameHandler = async (req,res) => {
         const gameFound = await getVideogameByName(name);
         return res.status(200).json(gameFound);
     } catch (error) {
-        return res.status(400).json({error: error.message});
+        return res.status(400).json("no se encuentra");
     }
 }
 

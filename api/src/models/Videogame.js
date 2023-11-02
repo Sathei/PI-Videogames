@@ -11,40 +11,33 @@ module.exports = (sequelize) => {
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      // allowNull: false,
     },
     description: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      // allowNull: false,
     },
     platforms: {
       type: DataTypes.ARRAY(DataTypes.JSON),
-      allowNull: false,
+      // allowNull: false,
       defaultValue: []
     },
   image: {
     type: DataTypes.STRING,
-    allowNull: false,
+    // allowNull: false,
   },
   dateReleased: {
     type: DataTypes.DATEONLY,
-    allowNull: false,
+    // allowNull: false,
   },
   rating: {
     type: DataTypes.DECIMAL,
-    allowNull: false,
+    // allowNull: false,
   }
+  },
+  {
+    timestamps: false
   });
 
-  sequelize.define('genres' , {
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false
-    }
-  })
+  
 };
